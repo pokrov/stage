@@ -86,29 +86,12 @@ class StagiaireController extends Controller
         $outputPath = $tempDirectory.'/'.Str::uuid().'.docx';
 
         $processor = new TemplateProcessor($templatePath);
-        $processor->setValue('attestation_text', $this->attestationText($stagiaire));
+        $processor->setValue('attestation_text', $stagiaire->attestationText());
+        $processor->setValue('closing_text', $stagiaire->attestationClosingText());
         $processor->saveAs($outputPath);
 
         return response()
             ->download($outputPath, $fileName)
             ->deleteFileAfterSend(true);
-    }
-
-    private function attestationText(Stagiaire $stagiaire): string
-    {
-        $debut = $stagiaire->date_debut->locale('fr')->isoFormat('D MMMM YYYY');
-        $fin = $stagiaire->date_fin->locale('fr')->isoFormat('D MMMM YYYY');
-
-        return sprintf(
-            'Le Directeur de l’Agence Urbaine d’Oujda atteste par la présente que %s, titulaire de la C.I.N n° %s, stagiaire en %s, filière « %s », à %s, a effectué un stage pratique au sein de cette Agence du %s au %s, sur le sujet « %s ».',
-            $stagiaire->nom,
-            $stagiaire->cin,
-            $stagiaire->niveau,
-            $stagiaire->filiere,
-            $stagiaire->etablissement,
-            $debut,
-            $fin,
-            $stagiaire->sujet,
-        );
     }
 }

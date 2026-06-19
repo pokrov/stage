@@ -46,11 +46,7 @@ def main() -> None:
 
         replace_paragraph_text(paragraphs[1], "ATTESTATION DE STAGE")
         replace_paragraph_text(paragraphs[6], "${attestation_text}")
-        replace_paragraph_text(
-            paragraphs[7],
-            "La présente attestation est délivrée à l’intéressé(e) sur sa demande "
-            "pour servir et valoir ce que de droit.",
-        )
+        replace_paragraph_text(paragraphs[7], "${closing_text}")
 
         # Une attestation doit contenir uniquement les huit premiers paragraphes.
         # Le paragraphe suivant comportait un saut de page et produisait une page vide.

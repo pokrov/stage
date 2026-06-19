@@ -24,6 +24,7 @@ class StoreStagiaireRequest extends FormRequest
     {
         return [
             'nom' => ['required', 'string', 'max:255'],
+            'civilite' => ['required', 'string', 'in:M.,Mlle.'],
             'cin' => ['required', 'string', 'max:30', 'unique:stagiaires,cin'],
             'sujet' => ['required', 'string', 'max:255'],
             'niveau' => ['required', 'integer', 'between:1,5'],

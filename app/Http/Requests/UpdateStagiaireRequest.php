@@ -25,6 +25,7 @@ class UpdateStagiaireRequest extends FormRequest
     {
         return [
             'nom' => ['required', 'string', 'max:255'],
+            'civilite' => ['required', 'string', 'in:M.,Mlle.'],
             'cin' => [
                 'required',
                 'string',

@@ -12,6 +12,7 @@ class StagiaireCrudTest extends TestCase
     use RefreshDatabase;
 
     private array $payload = [
+        'civilite' => 'Mlle.',
         'nom' => 'Aya Test',
         'cin' => 'F123456',
         'sujet' => 'Développement d’une application web',
@@ -102,7 +103,10 @@ class StagiaireCrudTest extends TestCase
 
     public function test_attestation_is_generated_from_the_word_template(): void
     {
-        $stagiaire = Stagiaire::create($this->payload);
+        $stagiaire = Stagiaire::create([
+            ...$this->payload,
+            'niveau' => '4ème année',
+        ]);
 
         $response = $this->get("/stagiaires/{$stagiaire->id}/attestation")
             ->assertOk()
@@ -122,8 +126,12 @@ class StagiaireCrudTest extends TestCase
         $this->assertStringContainsString('header2.xml', $relationships);
         $this->assertNotFalse($archive->getFromName('word/header2.xml'));
         $this->assertNotFalse($archive->getFromName('word/media/image1.jpeg'));
-        $this->assertStringContainsString('filière', $documentXml);
-        $this->assertStringContainsString('Architecture', $documentXml);
+        $this->assertStringContainsString('étudiante', $documentXml);
+        $this->assertStringContainsString('4ème année d’Architecture', $documentXml);
+        $this->assertStringContainsString('du 1 au 31 juillet 2026', $documentXml);
+        $this->assertStringContainsString('intéressée', $documentXml);
+        $this->assertStringNotContainsString('filière', $documentXml);
+        $this->assertStringNotContainsString('sur le sujet', $documentXml);
 
         $archive->close();
         unlink($path);

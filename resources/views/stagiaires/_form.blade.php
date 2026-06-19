@@ -4,6 +4,17 @@
 
 <div class="form-grid">
     <div class="field">
+        <label for="civilite">Civilité</label>
+        <select id="civilite" name="civilite" required>
+            @foreach (['Mlle.' => 'Mlle.', 'M.' => 'M.'] as $value => $label)
+                <option value="{{ $value }}" @selected(old('civilite', $stagiaire?->civilite ?? 'Mlle.') === $value)>
+                    {{ $label }}
+                </option>
+            @endforeach
+        </select>
+        @error('civilite') <span class="error">{{ $message }}</span> @enderror
+    </div>
+    <div class="field">
         <label for="nom">Nom complet</label>
         <input id="nom" name="nom" value="{{ old('nom', $stagiaire?->nom) }}" required autofocus>
         @error('nom') <span class="error">{{ $message }}</span> @enderror
